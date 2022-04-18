@@ -1,4 +1,5 @@
 ﻿#include "main.h"
+#include "Game/Kdgamesystem.h"
 
 //===================================================================
 // メイン
@@ -99,14 +100,10 @@ void Application::Execute()
 
 	// 時間
 	
-
+	m_fpsController.Init();
 	// 初期化
-	KdSquarePolygon poly;
-
-	poly.SetMaterial("Asset/Texture/Enviroment/Tree.png");
-
-
-
+	KdgameSystem gamesystem;
+	gamesystem.Init();
 	// ループ
 	while (1)
 	{
@@ -142,7 +139,7 @@ void Application::Execute()
 		//=========================================
 
 		// ゲーム更新
-
+		gamesystem.Update();
 		// ゲーム描画
 		Math::Color col(0.5f,0.0f,1.0f,1.0f);
 
@@ -152,12 +149,15 @@ void Application::Execute()
 		
 		D3D.WorkShaderManager().m_HD2DShader.BeginNoLighting();
 		{
+		
+		
 			
-			D3D.WorkShaderManager().m_HD2DShader.DrawSquarePolygon(poly);
+
+			
 			
 		}
 		D3D.WorkShaderManager().m_HD2DShader.EndNoLighting();
-
+		gamesystem.Draw();
 		
 		// BackBuffer -> 画面表示
 		D3D.WorkSwapChain()->Present(0, 0);
