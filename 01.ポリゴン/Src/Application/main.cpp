@@ -144,6 +144,21 @@ void Application::Execute()
 		D3D.WorkDevContext()->ClearRenderTargetView(D3D.GetBackBuffer()->WorkRTView(), col);
 		
 		D3D.WorkDevContext()->ClearDepthStencilView(D3D.WorkZBuffer()->WorkDSView(),D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,1.0f,0);
+		
+		D3D.WorkShaderManager().m_HD2DShader.BeginNoLighting();
+		{
+			KdSquarePolygon poly;
+
+			poly.SetMaterial("Asset/Texture/Enviroment/Tree.png");
+		
+			
+
+			D3D.WorkShaderManager().m_HD2DShader.DrawSquarePolygon(poly);
+			
+		}
+		D3D.WorkShaderManager().m_HD2DShader.EndNoLighting();
+
+		
 		// BackBuffer -> 画面表示
 		D3D.WorkSwapChain()->Present(0, 0);
 
