@@ -101,7 +101,23 @@ void Application::Execute()
 	
 
 	// 初期化
+	
+	//地面読み込み
+	KdModelData gland;
+	gland.Load("Asset/Models/Terrain/Terrain.gltf");
 
+	//空読み込み
+	KdModelData sky;
+	sky.Load("Asset/Models/Sky/BlueSky.gltf");
+
+	//箱読み込み
+	KdModelData cube;
+	cube.Load("Asset/Models/Cube/Cube.gltf");
+
+	//カメラの定義
+	KdCamera Shatter;
+
+	Shatter.SetProjectionMatrix(60.0f);
 	// ループ
 	while (1)
 	{
@@ -137,31 +153,32 @@ void Application::Execute()
 		//=========================================
 
 		// ゲーム更新
-
+		Math::Matrix ShatterMat = Math::Matrix::CreateTranslation(0.0f, 1.0f, -5.0f);
 		// ゲーム描画
 		Math::Color col(0.5f,0.0f,1.0f,1.0f);
 
 		D3D.WorkDevContext()->ClearRenderTargetView(D3D.GetBackBuffer()->WorkRTView(), col);
 		
 		D3D.WorkDevContext()->ClearDepthStencilView(D3D.WorkZBuffer()->WorkDSView(),D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,1.0f,0);
-		
-		KdCamera Shatter;
-
-		Shatter.SetProjectionMatrix(60.0f);
-
-		Math::Matrix ShatterMat = Math::Matrix::CreateTranslation(0.0f,1.0f,-5.0f);
 
 		Shatter.SetCameraMatrix(ShatterMat);
 
 		Shatter.SetToShader();
 
-		KdModelData model;
-		model.Load("Asset/Models/Terrain/Terrain.gltf");
-		
+		//光のないシェーダーの使用
 		D3D.WorkShaderManager().m_HD2DShader.BeginNoLighting();
 
-		D3D.WorkShaderManager().m_HD2DShader.DrawMesh(model.GetMesh(0).get(),Math::Matrix::Identity,model.GetMaterials(),kWhiteColor);
+		//地面表示
+		D3D.WorkShaderManager().m_HD2DShader.DrawMesh(gland.GetMesh(0).get(),Math::Matrix::Identity, gland.GetMaterials(),kWhiteColor);
 
+		//空表示
+		D3D.WorkShaderManager().m_HD2DShader.DrawMesh(sky.GetMesh(0).get(),Math::Matrix::Identity, sky.GetMaterials(),kWhiteColor);
+
+		//箱表示
+		//D3D.WorkShaderManager().m_HD2DShader.DrawMesh(cube.GetMesh(1).get(),Math::Matrix::Identity, cube.GetMaterials(),kWhiteColor);
+		
+		D3D.WorkShaderManager().m_HD2DShader.DrawModel(cube);
+		//光のないシェーダーの終了
 		D3D.WorkShaderManager().m_HD2DShader.EndNoLighting();
 		// BackBuffer -> 画面表示
 		D3D.WorkSwapChain()->Present(0, 0);

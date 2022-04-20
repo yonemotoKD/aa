@@ -168,7 +168,7 @@ void KdHD2DShader::DrawModel(const KdModelData& rModel, const Math::Matrix& mWor
 		auto& rDataNode = dataNodes[nodeIdx];
 
 		// 描画
-		DrawMesh(rDataNode.m_spMesh.get(), mWorld, rModel.GetMaterials(), col);
+		DrawMesh(rDataNode.m_spMesh.get(), rDataNode.m_worldTransform * mWorld, rModel.GetMaterials(), col);
 	}
 }
 

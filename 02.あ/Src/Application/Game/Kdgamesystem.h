@@ -12,5 +12,6 @@ public:
 
 private:
 	KdSquarePolygon poly;
+	KdCamera* Shatter;
 	void Release();
 };

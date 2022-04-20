@@ -140,6 +140,13 @@ void Application::Execute()
 
 		// ゲーム更新
 		gamesystem.Update();
+
+		
+
+		
+
+		
+
 		// ゲーム描画
 		Math::Color col(0.5f,0.0f,1.0f,1.0f);
 
