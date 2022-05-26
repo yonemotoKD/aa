@@ -15,6 +15,7 @@ public:
 
 private:
 	KdSquarePolygon* m_Play;
+	KdTexture* m_pScopeTex;
 	float movespeed = 0.0f;
 	int animFlame = 0;
 	Math::Matrix m_mWorld;
